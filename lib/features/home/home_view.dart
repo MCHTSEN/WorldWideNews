@@ -14,9 +14,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
+
+    // Collection'a erişim
     final CollectionReference news =
         FirebaseFirestore.instance.collection(FirebaseColletions.news.name);
-
+    //Collectiondan alınan verilerin modele(news) göre ayrıştırılması
     final response = news.withConverter(
       fromFirestore: (snapshot, options) {
         final jsonBody = snapshot.data();
@@ -25,6 +27,7 @@ class _HomeViewState extends State<HomeView> {
         }
         return null;
       },
+        // Collection'a gönderilen verilerin modele göre pkaetlenmesi
       toFirestore: (value, options) {
         if (value != null) {
           return value.toJson();
@@ -54,7 +57,7 @@ class _HomeViewState extends State<HomeView> {
                       snapshot.data!.docs.map((e) => e.data()).toList();
                   return ListView.builder(
                     itemCount: value.length,
-                    itemBuilder: (BuildContext context, int index) {
+                    itemBuilder: (BuildContext context, int index) {  
                       return Card(
                         child: Column(
                           children: [

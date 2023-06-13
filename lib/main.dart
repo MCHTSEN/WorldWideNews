@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/features/home/home_view.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/product/initialize/application_start.dart';
+import 'package:news_app/product/splash/splash_view.dart';
 
 Future<void> main() async {
   await ApplicationStart.init();
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeView(),
+      home: const ProviderScope(child: SplashView()),
     );
   }
 }
