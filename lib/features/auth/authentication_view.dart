@@ -14,6 +14,16 @@ class AuthenticationView extends ConsumerStatefulWidget {
 }
 
 class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
+  @override
+  void initState() {
+    checkUserLoggedIn(FirebaseAuth.instance.currentUser);
+    super.initState();
+  }
+
+  void checkUserLoggedIn(User? user) {
+    ref.read(authProvider.notifier).fetchUserDetails(user);
+  }
+
   final authProvider =
       StateNotifierProvider<AuthenticationNotifier, AuthenticationState>((ref) {
     return AuthenticationNotifier();
@@ -22,18 +32,27 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: FirebaseUIActions(
-        actions: [
-          AuthStateChangeAction<SignedIn>((context, state) {
-            if (state.user != null) {
-              print('okey');
-            }
-          })
+      body: Column(
+        children: [
+          FirebaseUIActions(
+            actions: [
+              AuthStateChangeAction<SignedIn>((context, state) {
+                if (state.user != null) {
+                  print('logged in');
+                  checkUserLoggedIn(state.user);
+                }
+              })
+            ],
+            child: LoginView(
+              action: AuthAction.signIn,
+              providers: FirebaseUIAuth.providersFor(FirebaseAuth.instance.app),
+            ),
+          ),
+          if (ref.read(authProvider).isRedirect)
+            TextButton(onPressed: () {}, child: const Text('Continue to app'))
+          else
+            const Placeholder(),
         ],
-        child: LoginView(
-          action: AuthAction.signIn,
-          providers: FirebaseUIAuth.providersFor(FirebaseAuth.instance.app),
-        ),
       ),
     );
   }
