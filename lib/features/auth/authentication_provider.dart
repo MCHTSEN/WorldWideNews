@@ -13,6 +13,7 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationState> {
     final token = await user.getIdToken();
     await saveTokenToCache(token);
     state = state.copyWith(isRedirect: true);
+    
   }
 
   Future<void> saveTokenToCache(String token) async {
@@ -28,7 +29,7 @@ class AuthenticationState extends Equatable {
   @override
   // TODO: implement props
   List<Object> get props => [isRedirect];
-
+ 
   AuthenticationState copyWith({
     bool? isRedirect,
   }) {

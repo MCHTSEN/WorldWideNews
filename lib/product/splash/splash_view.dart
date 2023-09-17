@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kartal/kartal.dart';
 import 'package:news_app/features/home/home_view.dart';
-import 'package:news_app/product/enums/image_constants.dart';
+import 'package:news_app/product/constants/image_constants.dart';
 import 'package:news_app/product/splash/splash_provider.dart';
 import 'package:news_app/product/widgets/text/fade_text.dart';
 
@@ -35,9 +35,9 @@ class _SplashViewState extends ConsumerState<SplashView> with SplashViewExtend {
           children: [
             ImageConstants.logo.toImage,
             const FadeText(
-              textFirst: 'Türk',
-              textSecond: 'Türkiye',
-              textThird: 'Türkiye Haber',
+              textFirst: 'Ephesus',
+              textSecond: 'Ephesus',
+              textThird: 'Ephesus News',
             ),
           ],
         ),

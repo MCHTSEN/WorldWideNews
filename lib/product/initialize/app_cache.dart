@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AppCache {
+final class AppCache {
   AppCache._();
   static AppCache instance = AppCache._();
   Future<void> setup() async {

@@ -5,5 +5,6 @@ enum CacheItems {
 
   String get read => AppCache.instance.sharedPreferences.getString(name) ?? '';
 
-  Future<bool> write(String value) => AppCache.instance.sharedPreferences.setString(name, value);
+  Future<bool> write(String value) =>
+      AppCache.instance.sharedPreferences.setString(name, value);
 }
