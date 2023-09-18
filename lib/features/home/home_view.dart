@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kartal/kartal.dart';
 import 'package:news_app/features/home/home_provider.dart';
+import 'package:news_app/features/home/home_search_delegate.dart';
 import 'package:news_app/product/constants/app_strings.dart';
 import 'package:news_app/product/constants/colors_constants.dart';
 import 'package:news_app/product/widgets/card/home_news_card.dart';
@@ -20,25 +21,30 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
+  final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
       ref.read(_homeProvider.notifier).fetchWithLoading();
     });
+    ref.read(_homeProvider.notifier).addListener((state) {
+      _controller.text = state.selectedTag?.name ?? '';
+    });
   }
 
-  final dummyImage =
-      'https://firebasestorage.googleapis.com/v0/b/news-app-5a982.appspot.com/o/BMW_logo_(gray).png?alt=media&token=a8c5f30e-aee9-4b87-9918-0bf727564360';
-  final String dummySubtitle = 'A simple Trick For beginners';
-  final String dummyTitle = 'UI/UX Desing';
-
-  int selectedChipIndex = -1;
-
+  int selectedChipIndex = -1; 
   void selectChip(int index) {
     setState(() {
       selectedChipIndex = index;
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,7 +61,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   const CustomTitle(value: AppStrings.homeBrowse),
                   const CustomSubTitle(value: AppStrings.homeBrowseDetail),
                   _empty(),
-                  _SearchBar(),
+                  _SearchBar(_controller),
                   _Chips(),
                   const SizedBox(
                     height: 300,
@@ -75,57 +81,30 @@ class _HomeViewState extends ConsumerState<HomeView> {
     );
   }
 
-  ClipRRect _SearchBar() {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(18)),
-      child: SizedBox(
-        height: 70,
-        child: TextField(
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            fillColor: ColorConstants.unSelected,
-            filled: true,
-            border: const OutlineInputBorder(borderSide: BorderSide.none),
-            prefix: const Icon(
-              Icons.search,
-              size: 20,
-            ),
-            suffix: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.mic_none_rounded,
-                size: 20,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Expanded _RecommendedForYou() {
+    final recommendeds = ref.watch(_homeProvider).recommendeds ?? [];
     return Expanded(
       child: ListView.builder(
         physics: const ClampingScrollPhysics(),
-        itemCount: 3,
+        itemCount: recommendeds.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: context.onlyBottomPaddingNormal,
             child: Row(
               children: [
                 Image.network(
-                  dummyImage,
+                  recommendeds[index].image ?? '',
                   width: 75,
                 ),
                 Expanded(
                   child: ListTile(
                     title: Text(
-                      dummyTitle,
+                      recommendeds[index].title ?? '',
                       style: context.textTheme.bodyLarge
                           ?.copyWith(color: Colors.grey),
                     ),
                     subtitle: Text(
-                      dummySubtitle,
+                      recommendeds[index].description ?? '',
                       style: context.textTheme.bodyLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
@@ -180,6 +159,36 @@ class _HomeViewState extends ConsumerState<HomeView> {
           );
         },
       ),
+    );
+  }
+}
+
+class _SearchBar extends ConsumerWidget {
+  const _SearchBar(this.controller);
+  final TextEditingController controller;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SearchBar(
+      controller: controller,
+      backgroundColor: MaterialStateColor.resolveWith(
+        (states) => ColorConstants.white,
+      ),
+      onTap: () async {
+        final result = await showSearch(
+          context: context,
+          delegate: HomeSearchDelegate(
+            ref.read(_homeProvider.notifier).fullTagList,
+          ),
+        );
+        ref.read(_homeProvider.notifier).updateTag(result);
+      },
+      hintText: AppStrings.homeSearchHint,
+      trailing: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.mic),
+        )
+      ],
     );
   }
 }

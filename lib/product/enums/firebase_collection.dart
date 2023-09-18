@@ -4,6 +4,7 @@ enum FirebaseColletions {
   news,
   category,
   tags,
+  recommended,
   version;
 
   CollectionReference get reference =>
