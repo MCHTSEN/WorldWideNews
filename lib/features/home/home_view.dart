@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kartal/kartal.dart';
 import 'package:news_app/features/home/home_provider.dart';
 import 'package:news_app/features/home/home_search_delegate.dart';
+import 'package:news_app/features/home/subview/create_news/create_news_logic.dart';
+import 'package:news_app/features/home/subview/create_news/create_news_view.dart';
 import 'package:news_app/product/constants/app_strings.dart';
 import 'package:news_app/product/constants/colors_constants.dart';
 import 'package:news_app/product/widgets/card/home_news_card.dart';
@@ -21,6 +23,7 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
+  
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -34,7 +37,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     });
   }
 
-  int selectedChipIndex = -1; 
+  int selectedChipIndex = -1;
   void selectChip(int index) {
     setState(() {
       selectedChipIndex = index;
@@ -50,6 +53,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          context.navigateToPage(const CreateNews());
+        },
+      ),
       body: SafeArea(
         child: Padding(
           padding: context.paddingNormal,
@@ -128,7 +137,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        const CustomTitle(value: AppStrings.homeRecommended),
+        const Expanded(child: CustomTitle(value: AppStrings.homeRecommended)),
         TextButton(
           onPressed: () {},
           child: const Text(AppStrings.homeSeeAll),

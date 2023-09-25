@@ -36,12 +36,16 @@ dependencies:
   kartal: ^2.8.0
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5 
+
   #firebase
   cloud_firestore: ^4.8.0
   #firebase_core: ^2.13.1
   firebase_auth: ^4.6.3
   firebase_ui_auth: ^1.5.0
 
+  #utils
+  image_picker: ^1.0.4
+  
   #cache
   shared_preferences: ^2.2.0
 
@@ -55,19 +59,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   very_good_analysis: ^5.0.0+1
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
   
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
 
 

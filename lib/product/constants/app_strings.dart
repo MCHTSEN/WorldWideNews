@@ -11,4 +11,7 @@ class AppStrings {
   static const homeSearchHint = 'Search...';
   static const homeRecommended = 'Recommended for you';
   static const homeSeeAll = 'See All';
+
+  //home create
+  static const homeCreateSend = 'Send';
 }

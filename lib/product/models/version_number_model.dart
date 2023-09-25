@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import 'package:news_app/product/utilities/base/base_firebase_model.dart';
 
+@immutable
 class VersionNuberModel extends Equatable
     with IdModel, BaseFirebaseModel<VersionNuberModel> {
   VersionNuberModel({
@@ -37,5 +39,5 @@ class VersionNuberModel extends Equatable
 
   @override
   // TODO: implement id
-  String? id = '';
+ final String? id = '';
 }

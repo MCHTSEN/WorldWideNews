@@ -16,9 +16,9 @@ class Recommended extends Equatable
       image: json['image'] as String?,
     );
   }
-  String? title;
-  String? description;
-  String? image;
+  final String? title;
+  final String? description;
+  final String? image;
 
   @override
   List<Object?> get props => [title, description, image];
