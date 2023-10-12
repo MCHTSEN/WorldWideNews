@@ -17,7 +17,6 @@ class _CreateNewsState extends State<CreateNews> {
   void initState() {
     super.initState();
     _homeLogic = CreateNewsLogic();
-
     _fetchInitialCategory();
   }
 
@@ -33,6 +32,12 @@ class _CreateNewsState extends State<CreateNews> {
         title: const Text('Create news'),
       ),
       body: Form(
+        onChanged: () {
+          _homeLogic.checkAllValidate((value) {
+            setState(() {});
+          });
+        },
+        autovalidateMode: AutovalidateMode.always,
         key: _homeLogic.formKey,
         child: Padding(
           padding: context.paddingLow,
@@ -46,6 +51,7 @@ class _CreateNewsState extends State<CreateNews> {
                 _empty(),
                 TextFormField(
                   controller: _homeLogic.titleController,
+                  validator: (value) => _homeLogic.checkValidate(value),
                   decoration: const InputDecoration(
                     hintText: 'Title',
                     border: OutlineInputBorder(
@@ -63,7 +69,11 @@ class _CreateNewsState extends State<CreateNews> {
                     ),
                     child: IconButton(
                       onPressed: () async {
-                        await _homeLogic.pickImage();
+                        await _homeLogic.pickAndCheck(
+                          (value) {
+                            setState(() {});
+                          },
+                        );
                         setState(() {});
                       },
                       icon: _homeLogic.selectedFileBytes != null
@@ -77,7 +87,7 @@ class _CreateNewsState extends State<CreateNews> {
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size.fromHeight(60),
                   ),
-                  onPressed: () {},
+                  onPressed: _homeLogic.isValidateAllForm ? () {} : null,
                   icon: const Icon(Icons.send_outlined),
                   label: const Text(AppStrings.homeCreateSend),
                 )
@@ -105,7 +115,8 @@ class _HomeDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<CategoryModel>(
-      validator: (value) => value == null ? 'Cannot empty' : null,
+      validator: (value) =>
+          value == null ? AppStrings.homeCreateValidMessage : null,
       items: categories
           .map(
             (e) => DropdownMenuItem(

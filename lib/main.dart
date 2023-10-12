@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/features/home/home_view.dart';
 import 'package:news_app/product/constants/app_strings.dart';
 import 'package:news_app/product/initialize/application_start.dart';
+import 'package:news_app/product/widgets/stepper.dart';
 
 Future<void> main() async {
   await ApplicationStart.init();
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ProviderScope(child: HomeView()),
+      home: const ProviderScope(child: CustomStepper()),
     );
   }
 }

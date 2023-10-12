@@ -14,4 +14,6 @@ class AppStrings {
 
   //home create
   static const homeCreateSend = 'Send';
+  static const homeCreateValidMessage= 'This fields can not be empty.';
+
 }
